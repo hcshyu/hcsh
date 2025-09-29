@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>像素冒險 — 宣傳頁</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#111;
+      --accent:#9ce0ff;
+      --muted:#d0d0d0;
+      --card:#1c1c1c;
+      --link:#4bd6ff;
+      --link-hover:#9cf4ff;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      background:linear-gradient(180deg,#1a1a1a 0%, #2a2a2a 60%);
+      color:var(--muted);
+      font-family:'Noto Sans TC',sans-serif;
+      overflow-x:hidden;
+    }
+
+    /* --- 開場黑屏 --- */
+    #splash{
+      position:fixed;inset:0;background:#000;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      z-index:9999;user-select:none;
+      gap:18px;
+      text-align:center;
+    }
+    #splash .title{
+      font-family:'Press Start 2P',monospace;
+      color:var(--accent);font-size:42px;
+      letter-spacing:2px;
+      filter:drop-shadow(0 0 10px rgba(156,224,255,.4));
+      animation:blink 1s steps(1) infinite;
+      line-height:1.4;
+    }
+    @keyframes blink{50%{opacity:.4}100%{opacity:1}}
+
+    
+
+    header{position:sticky;top:0;background:rgba(20,20,20,.7);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,.08);z-index:100}
+    .container{max-width:1100px;margin:0 auto;padding:18px}
+    nav{display:flex;justify-content:space-between;align-items:center}
+    .nav-links{display:flex;gap:14px}
+    .nav-links a{color:var(--muted);text-decoration:none;padding:8px 12px;font-size:14px;border-radius:6px}
+    .nav-links a:hover{background:rgba(255,255,255,.06);color:var(--accent)}
+
+    .hero{min-height:60vh;display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;padding:40px 0}
+    .game-title{font-family:'Press Start 2P';color:var(--accent);font-size:28px;margin-bottom:14px}
+    .lead{font-size:20px;color:#eee;line-height:1.8;margin-bottom:20px}
+    .cta{display:flex;gap:12px}
+    .btn{padding:12px 16px;border-radius:8px;border:0;font-weight:bold;cursor:pointer;transition:.3s}
+    .btn-download{background:linear-gradient(90deg,#00c4ff,#4be0c9);color:#072941}
+    .btn-download:hover{transform:scale(1.05)}
+    .btn-play{background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--muted)}
+    .btn-play:hover{color:var(--accent)}
+
+    .card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+
+    .preview{display:flex;align-items:center;justify-content:center;height:300px;border-radius:10px;background:#111}
+    .pixel-stage{width:200px;height:200px;image-rendering:pixelated;background:#222;border:4px solid #444;border-radius:8px;display:flex;align-items:center;justify-content:center}
+    .pixel-sprite{width:64px;height:64px;background:url('assets/sprite-demo.png');background-size:contain;animation:walk 1s steps(4) infinite}
+    @keyframes walk{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+
+    section{padding:40px 0}
+    h2{font-family:'Press Start 2P';color:var(--accent);font-size:20px;margin-bottom:16px}
+    .columns{display:grid;grid-template-columns:2fr 1fr;gap:20px}
+
+    /* --- 文字放大 --- */
+    p, li { font-size:18px; line-height:1.8 }
+
+    /* --- 角色圖片 --- */
+    .images{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .images img{
+      width:calc(33.33% - 8px);
+      aspect-ratio:1/1;            
+      object-fit:cover;
+      border-radius:6px;
+      transition:.4s;
+      cursor:pointer;
+    }
+    .images img:hover{transform:scale(1.08)}
+
+    /* --- 圖庫 --- */
+    .gallery{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .gallery img{
+      width:100%;
+      aspect-ratio:1/1;
+      object-fit:cover;
+      border-radius:6px;
+      transition:.3s;
+      cursor:pointer;
+    }
+    .gallery img:hover{transform:scale(1.05)}
+
+    .pdf-embed{width:100%;height:420px;border:0;border-radius:8px}
+
+    footer{padding:24px 0;text-align:center;font-size:13px;color:#aaa}
+
+    a{color:var(--link);text-decoration:none}
+    a:hover{color:var(--link-hover)}
+
+    /* --- Lightbox --- */
+    #lightbox-overlay {
+      position: fixed;
+      top:0; left:0;
+      width:100%;
+      height:100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
+    #lightbox-overlay img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius:8px;
+      box-shadow:0 6px 20px rgba(0,0,0,.7);
+    }
+
+    /* --- 縮小右邊圖片 --- */
+    .preview-box img {
+      max-width: 300px;
+      height: auto;
+      border-radius: 8px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    @media(max-width:900px){
+      .hero{grid-template-columns:1fr}
+      .columns{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <!-- 開場黑屏 -->
+  <div id="splash">
+    <div class="title">《老闆去國外進修的日子》</div>
+    <div class="title">議題參與模擬平台之政府資料公開整合</div>
+    <div class="title">An Issue Participation Simulation Platform Based on Government Open Data Integration</div>
+  </div>
+
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          <img src="https://i.postimg.cc/tgm53wV2/image.png" alt="logo" style="height:30px;">
+        </div>
+        <div class="nav-links">
+          <a href="#download">下載</a>
+          <a href="#motivation">動機</a>
+          <a href="#method">執行方法</a>
+          <a href="#play">遊玩方式</a>
+          <a href="#benefits">效益</a>
+          <a href="#contact">聯絡</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <div class="game-title">老闆去國外進修的那些日子</div>
+        <p class="lead">南北粽之爭?早上10點上學?還是代理孕母合法化?</p>
+        <p class="lead">你想看看站在你對立面的人在想甚麼嗎?</p>
+        <p class="lead">趕快來加入這個遊戲成為執行官吧!</p>
+        <div class="cta">
+          <button class="btn btn-download" id="downloadBtn">下載遊戲</button>
+          <button class="btn btn-play" id="demoBtn">快速預覽</button>
+        </div>
+      </div>
+        <!-- 右邊圖片 -->
+      <div class="preview-box">
+        <img src="https://i.postimg.cc/tgm53wV2/image.png" alt="遊戲展示圖">
+      </div>
+</div>
+    </section>
+
+    <section id="download">
+      <h2>下載遊戲</h2>
+      <div class="card">
+        <ul>
+          <li><a href="assets/downloads/game-win.zip">Windows 版</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="motivation">
+      <h2>製作動機</h2>
+      <div class="columns">
+        <div class="card">
+          <p>透過遊戲的方式，讓大眾可以在遊玩的過程中，去看見不同想法的意見，像是公共意見網路參與平台上的熱門議題，讓雙方都能見到彼此的看法。
+            並且遊戲的資料來源來自:政府資料開放平台，我們希望藉此能讓一般大眾也能了解到這個平台的存在及作用性。</p>
+          <p>參考資料：</p>
+          <ul>
+            <li><a href="https://data.gov.tw/" target="_blank">政府資料開放平台</a></li>
+            <li><a href="https://join.gov.tw/" target="_blank">公共政策網路參與平台</a></li>
+            <li><a href="https://github.com/hcshyu/hcsh/blob/main/123.pdf" target="_blank">動機 PDF</a></li>
+            <li><a href="https://github.com/hcshyu/hcsh/blob/main/%E6%8F%90%E6%A1%88%E8%A7%A3%E9%87%8B.docx.pdf" target="_blank">選題動機</a></li>
+          </ul>
+        </div>
+        <aside class="card">
+          <h3>圖表</h3>
+          <div class="gallery">
+          <figure>
+              <img src="https://i.postimg.cc/t4tDJyGV/image.png" onclick="openImage(this.src)">
+              <figcaption>墮胎</figcaption>
+          </figure>
+         <figure>
+              <img src="https://i.postimg.cc/pLYkrxMh/2025-09-29-08301.png" onclick="openImage(this.src)">
+              <figcaption>近10年車禍A1A2數量對比</figcaption>
+          </figure>
+          <figure>
+          <img src="https://i.postimg.cc/P5zKJhn5/2025-09-29-083014.png" onclick="openImage(this.src)">
+          <figcaption>酒駕死亡人數及案件數統計</figcaption>
+          </figure>
+          <figure>
+          <img src="https://i.postimg.cc/FHMfMkBd/2025-09-29-225521.png" onclick="openImage(this.src)">
+         <figcaption>青少年刑事案件統計折線圖</figcaption>
+         </figure>
+        </div>
+
+        </aside>
+      </div>
+    </section>
+
+    <section id="method">
+      <h2>執行方法</h2>
+      <div class="card">
+        <p>我們提出一個融入「公共政策網路參與平台」與「遊戲化學習」的網頁遊戲企劃，結合整理政府資料開放平台中的數據，
+          透過沉浸式決策體驗，讓玩家能以不同視角看待不同立場的觀點。此舉不僅能降低參與門檻，也能加深民眾對政策的理解與關注，
+          特別是吸引年輕族群投入公共事務。</p>
+      </div>
+    </section>
+
+    <section id="play">
+      <h2>遊玩方式介紹</h2>
+      <div class="card">
+        <p>玩家將在遊戲中體驗"執行官"的工作，在面對不同的議題，做出是否要下達開始實施的決策。
+           但似乎不論做出甚麼選擇，都會面臨一些問題。
+        </p>
+      </div>
+    </section>
+
+    <!-- 角色圖片移到遊戲玩法下方 -->
+    <section id="characters">
+      <h2>遊戲畫面截圖</h2>
+      <div class="card">
+        <div class="images">
+          <img src="https://i.postimg.cc/PqLVNY6t/2025-09-29-222157.png" onclick="openImage(this.src)">
+          <img src="https://i.postimg.cc/0yML3Tpy/2025-09-29-221448.png" onclick="openImage(this.src)">
+          <img src="https://i.postimg.cc/jqGxj4Z5/2025-09-29-222055.png" onclick="openImage(this.src)">
+          <img src="https://i.postimg.cc/X7vW5ryy/2.png" onclick="openImage(this.src)">
+          <img src="https://i.postimg.cc/qMPWnm3t/2025-09-29-223504.png" onclick="openImage(this.src)">
+        </div>
+      </div>
+    </section>
+
+    <section id="benefits">
+      <h2>效益與教學幫助</h2>
+      <div class="card">
+        <p>學生可作為公民教育的輔助教材，幫助學生在互動中可以培養包容多方意見幾及養成理性判斷的能力；
+           一般民眾則可作為一個更輕鬆接觸公共議題的媒介；至於教師與教育單位，
+           甚至政策研究與公民團體可作為教學資源及推廣公民參與的工具，
+           寓教於樂的形式可以吸引更多人參與。
+        </p>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>聯絡方式</h2>
+      <div class="card">
+        <p>Email: 11232068@mail.hcsh.tp.edu.tw</p>
+        <p>社群: <a href="#">IG:yu3.14159_、estitutio、yeiliao_12、_w._zh1</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>© 2025 七天爆肝團隊製作</footer>
+
+  <!-- Lightbox Overlay -->
+  <div id="lightbox-overlay" onclick="closeLightbox()">
+    <img id="lightbox-img" src="">
+  </div>
+
+  <script>
+    const SPLASH_TIME = 3000;
+    window.addEventListener('DOMContentLoaded',()=>{
+      const splash=document.getElementById('splash');
+      setTimeout(()=>{
+        splash.style.transition='opacity .7s';
+        splash.style.opacity=0;
+        setTimeout(()=>splash.remove(),800);
+      },SPLASH_TIME);
+
+      document.getElementById('downloadBtn').onclick=()=>location.href="#download";
+      document.getElementById('demoBtn').onclick=()=>location.href="#characters";
+    });
+
+    // Lightbox
+    function openImage(src){
+      const overlay = document.getElementById('lightbox-overlay');
+      const img = document.getElementById('lightbox-img');
+      img.src = src;
+      overlay.style.display = 'flex';
+    }
+
+    function closeLightbox(){
+      const overlay = document.getElementById('lightbox-overlay');
+      overlay.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
